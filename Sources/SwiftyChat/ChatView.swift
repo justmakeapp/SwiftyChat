@@ -10,7 +10,9 @@ import SwiftUI
 import SwiftUIEKtensions
 
 public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
-    
+
+	@EnvironmentObject var style: ChatMessageCellStyle
+
     @Binding private var messages: [Message]
     private var inputView: () -> AnyView
     private var customCellView: ((Any) -> AnyView)?
@@ -29,9 +31,13 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
+	@Binding private var showIsTyping: Bool
     @State private var isKeyboardActive = false
     
     @State private var contentSizeThatFits: CGSize = .zero
+
+	private var buildTypingView: () -> AnyView
+
     private var messageEditorHeight: CGFloat {
         min(
             contentSizeThatFits.height,
@@ -97,6 +103,19 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                 }
                             }
                     }
+
+					if showIsTyping {
+						VStack {
+							buildTypingView()
+						}
+						.padding(.horizontal, style.outgoingTextStyle.textPadding)
+						.frame(
+							maxWidth: .infinity,
+							alignment: .leading
+ 						)
+						.animation(.bouncy, value: showIsTyping)
+					}
+
                     Spacer()
                         .frame(height: inset.bottom)
                         .id("bottom")
@@ -230,10 +249,12 @@ public extension ChatView {
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
         scrollTo: Binding<UUID?> = .constant(nil),
+		showIsTyping: Binding<Bool>,
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
 		inset: EdgeInsets = .init(),
         inputView: @escaping () -> AnyView,
+		buildTypingView: @escaping () -> AnyView,
         reachedTop: (() -> Void)? = nil
     ) {
         _messages = messages
@@ -248,6 +269,8 @@ public extension ChatView {
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
         self.reachedTop = reachedTop
         _scrollTo = scrollTo
+		_showIsTyping = showIsTyping
+		self.buildTypingView = buildTypingView
     }
 }
 
