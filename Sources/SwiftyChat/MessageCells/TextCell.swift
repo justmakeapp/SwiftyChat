@@ -22,7 +22,7 @@ internal struct TextCell<Message: ChatMessage>: View {
     }
     
     private let enabledDetectors: [DetectorType] = [
-        .address, .date, .phoneNumber, .url, .transitInformation
+//        .address, .date, .phoneNumber, .url, .transitInformation
     ]
     
     private var maxWidth: CGFloat {
@@ -34,12 +34,17 @@ internal struct TextCell<Message: ChatMessage>: View {
     }
     
     // MARK: - Default Text
+	@ViewBuilder
     private var defaultText: some View {
+		let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
+		let textWidth = frame.width
+
         Text(text)
             .fontWeight(cellStyle.textStyle.fontWeight)
             .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
             .lineLimit(nil)
             .foregroundColor(cellStyle.textStyle.textColor)
+			.frame(width: textWidth)
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
             .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
