@@ -9,7 +9,6 @@
 import Foundation
 
 public protocol ChatMessage: Identifiable {
-    
     associatedtype User: ChatUser
     /// The `User` who sent this message.
     var user: User { get }

@@ -48,7 +48,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         contentSizeThatFits = $0
                     }
                     .frame(height: messageEditorHeight)
-                    .padding(.bottom, 12)
                 
                 PIPVideoCell<Message>()
             }
@@ -57,7 +56,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
-        .iOS { $0.dismissKeyboardOnTappingOutside() }
+//        .iOS { $0.dismissKeyboardOnTappingOutside() }
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
@@ -137,7 +136,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             }
         }
         .background(Color.clear)
-        .padding(.bottom, messageEditorHeight + 30)
+        .padding(.bottom, messageEditorHeight)
     }
     
 }
@@ -233,8 +232,8 @@ public extension ChatView {
         scrollTo: Binding<UUID?> = .constant(nil),
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
+		inset: EdgeInsets = .init(),
         inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init(),
         reachedTop: (() -> Void)? = nil
     ) {
         _messages = messages
