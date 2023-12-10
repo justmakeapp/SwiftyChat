@@ -66,7 +66,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        let scrollView = ScrollView(.vertical, showsIndicators: false) {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
@@ -154,6 +154,15 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
             }
         }
+
+		Group {
+			if #available(iOS 16.0, *) {
+				scrollView
+					.scrollDismissesKeyboard(.immediately)
+			} else {
+				scrollView
+			}
+		}
         .background(Color.clear)
         .padding(.bottom, messageEditorHeight)
     }
