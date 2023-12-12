@@ -15,6 +15,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 
     @Binding private var messages: [Message]
     private var inputView: () -> AnyView
+	private var chatBackgroundView: () -> AnyView
     private var customCellView: ((Any) -> AnyView)?
     
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
@@ -48,6 +49,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
+				chatBackgroundView()
                 chatView(in: geometry)
                 inputView()
                     .onPreferenceChange(ContentSizeThatFitsKey.self) {
@@ -262,11 +264,13 @@ public extension ChatView {
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
 		inset: EdgeInsets = .init(),
+		@ViewBuilder chatBackgroundView: @escaping () -> AnyView,
         inputView: @escaping () -> AnyView,
 		buildTypingView: @escaping () -> AnyView,
         reachedTop: (() -> Void)? = nil
     ) {
         _messages = messages
+		self.chatBackgroundView = chatBackgroundView
         self.inputView = inputView
         _scrollToBottom = scrollToBottom
         self.inset = inset
