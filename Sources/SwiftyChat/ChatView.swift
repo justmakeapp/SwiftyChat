@@ -49,8 +49,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
-				chatOverlayView()
                 chatView(in: geometry)
+				chatOverlayView()
                 inputView()
                     .onPreferenceChange(ContentSizeThatFitsKey.self) {
                         contentSizeThatFits = $0
