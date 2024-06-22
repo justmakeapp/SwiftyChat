@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -16,10 +16,10 @@ let package = Package(
     ],
     dependencies: [
         // Image downloading library
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.9.1"),
-        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.2.0"),
-        .package(url: "https://github.com/wxxsw/VideoPlayer.git", from: "1.2.4"),
-        .package(url: "https://github.com/dkk/WrappingHStack.git", from: "2.2.11")
+        .package(url: "https://github.com/onevcat/Kingfisher.git", exact: "7.9.1"),
+        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", exact: "0.2.0"),
+        .package(url: "https://github.com/wxxsw/VideoPlayer.git", exact: "1.2.4"),
+        .package(url: "https://github.com/dkk/WrappingHStack.git", exact: "2.2.11")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
